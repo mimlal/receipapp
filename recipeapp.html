@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" />
+	<title>receip apps</title>
+	<style>
+		@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+		*{
+			box-sizing: border-box;
+		}
+		body{
+			font-family: 'Roboto', sans-serif;
+			margin: 0;
+		    background: #ECE9E6;  
+background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6); 
+background: linear-gradient(to right, #FFFFFF, #ECE9E6); 
+             display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            min-height: 100vh;
+
+		}
+		.mobile-container{
+			width: 400px;
+			background: white;
+            box-shadow: 0 0 10px 2px #3333331a;
+            overflow: hidden;
+            border-radius: 3px;
+
+		}
+		header{
+			padding: 1rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+		}
+		img{
+			max-height: 100%;
+		}
+		header input{
+			border: none;
+			border-radius: 3px;
+			padding: 1rem 1rem;
+			background: #eee;
+			font-family: inherit;
+
+		}
+		header button{
+          background: transparent;
+          color: #aaa;
+          font-size: 2rem;
+          border: none;
+          margin-left: 10px;
+
+		}
+		.fav-container{
+			
+            padding: 0.25rem;
+            background: rgb(233, 199, 255);
+            
+            text-align: center;
+            
+		}
+	
+		.fav-meals{
+			display: flex;
+			flex-wrap: wrap;
+			list-style: none;
+			padding: 0;
+		}
+		.fav-meals li{
+			width: 85px;
+			margin: 6px;
+
+		}
+		.fav-meals li img{
+			height: 70px;
+			margin-top: 13px;
+			width: 70px;
+			border-radius: 50%;
+			object-fit: cover;
+			border: 2px solid white;
+			box-shadow: 0 0 10px 2px #3333331a;
+			
+		}
+		.fav-meals li span{
+			font-size: 0.9rem;
+
+		}
+		.meal{
+          margin: 1.5rem;
+          box-shadow: 0 0 10px 2px #3333331a;
+		  border-radius:3px ;
+		  overflow: hidden;
+		}
+		.meal-header{
+          position: relative;
+		}
+		.meal-header .random{
+          position: absolute;
+          top: 1rem;
+          background: #fff;
+          padding: 0.25rem 0.5rem;
+          border-top-right-radius: 3px;
+          border-bottom-right-radius: 3px;
+		}
+		.meal-header img{
+          height: 300px;
+          width: 100%;
+          object-fit: cover;
+		}
+		.meal-body{
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         padding: 1rem;
+		}
+		.meal-body h4{
+			margin: 0;
+
+		}
+		.meal-body .fav-btn{
+			background: transparent;
+			border: none;
+			font-size: 1.2rem;
+			cursor: pointer;
+			color: grey;
+		}
+        .fav-body .fav-btn.active{
+        	color: rebeccapurple;
+        }
+
+	</style>
+</head>
+<body>
+	<div class="mobile-container">
+		<header>
+			<input type="text">
+			<button id="search"><i class="fas fa-search"></i></button>
+		</header>
+		<div class="fav-container">
+			<h1>favourite Meals</h1>
+			<ul class="fav-meals">
+				<li><img src="https://images.pexels.com/photos/461198/pexels-photo-461198.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt=""><span></span>lime</li>
+				<li><img src="https://images.pexels.com/photos/958545/pexels-photo-958545.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt=""><span>carbonara</span></li>
+				<li><img src="https://images.pexels.com/photos/1234535/pexels-photo-1234535.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt=""><span>carbonara</span></li>
+				
+				<li><img src="https://images.pexels.com/photos/1633578/pexels-photo-1633578.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt=""><span>lasagna</span></li>
+			</ul>
+		</div>
+		<div class="meals" id="meals">
+			
+			
+		</div>
+	</div>
+	<script>
+		const meals = document.getElementById('meals');
+		async function getRandomMeal() {
+    const resp = await fetch(
+        "https://www.themealdb.com/api/json/v1/1/random.php"
+    );
+    const respData = await resp.json();
+    const randomMeal = respData.meals[0];
+     
+    addMeal(randomMeal, true);
+}
+
+		async function getMealById(id) {
+    const resp = await fetch(
+        "https://www.themealdb.com/api/json/v1/1/lookup.php?i=" + id
+    );
+
+    // const respData = await resp.json();
+    // const meal = respData.meals[0];
+
+    // return meal;
+}
+		async function getMealsBySearch(term) {
+    const resp = await fetch(
+        "https://www.themealdb.com/api/json/v1/1/search.php?s=" + term
+    );
+
+    // const respData = await resp.json();
+    // const meals = respData.meals;
+
+    // return meals;
+}
+   function addMeal(mealData,random = false){
+   	console.log(mealData);
+         const meal = document.createElement('div');
+         meal.classList.add('meal');
+         meal.innerHTML =`
+        <div class="meal-header">
+            ${
+                random
+                    ? `
+            <span class="random"> Random Recipe </span>`
+                    : ""
+            }
+            <img
+                src="${mealData.strMealThumb}"
+                alt="${mealData.strMeal}"
+            />
+        </div>
+        <div class="meal-body">
+            <h4>${mealData.strMeal}</h4>
+            <button class="fav-btn">
+                <i class="fas fa-heart"></i>
+            </button>
+        </div>
+    `;
+    meals.appendChild(meals);
+    
+    }
+
+	</script>
+</body>
+</html>
